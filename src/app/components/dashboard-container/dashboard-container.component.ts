@@ -3,14 +3,18 @@ import {ButtonsContainerComponent} from "../buttons-container/buttons-container.
 import {AnswerDisplayComponent} from "../answer-display/answer-display.component";
 import {ActionsEnum} from "../../models/actions.enum";
 import {InputButtonConfiguration} from "../../models/input-button-configuration";
-import {InputButtonComponent} from "../input-button/input-button.component";
+import {PreviousCalculationsViewComponent} from "../previous-calculations-view/previous-calculations-view.component";
+import {NgClass, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-dashboard-container',
   standalone: true,
   imports: [
     ButtonsContainerComponent,
-    AnswerDisplayComponent
+    AnswerDisplayComponent,
+    PreviousCalculationsViewComponent,
+    NgIf,
+    NgClass
   ],
   templateUrl: './dashboard-container.component.html',
   styleUrl: './dashboard-container.component.scss'
@@ -20,6 +24,7 @@ export class DashboardContainerComponent {
   pastCalculations: string[];
   lastCalculationAnswer = 0;
   lastPressedWasEquals = false;
+  fullHeightHistory = false;
 
   constructor() {
     this.currentCalculationButtons = [];
@@ -31,12 +36,21 @@ export class DashboardContainerComponent {
       this.currentCalculationButtons = [];
       return;
     }
+
+    if (this.isViewPastFullHeight(buttonConfiguration)) {
+      this.toggleFullHeightPrevious();
+      return;
+    }
     if (this.lastPressedWasEquals) {
       this.handleNewCalculationStart(buttonConfiguration);
       return;
     }
     this.currentCalculationButtons = this.currentCalculationButtons.filter(i => i != null);
     this.currentCalculationButtons.push(buttonConfiguration);
+  }
+
+  toggleFullHeightPrevious() {
+    this.fullHeightHistory = !this.fullHeightHistory;
   }
 
   private handleNewCalculationStart(buttonConfiguration: InputButtonConfiguration) {
@@ -56,6 +70,10 @@ export class DashboardContainerComponent {
 
   isClear(buttonConfiguration: InputButtonConfiguration) {
     return buttonConfiguration.actionValueWhenPressed === ActionsEnum.ac;
+  }
+
+  isViewPastFullHeight(buttonConfiguration: InputButtonConfiguration) {
+    return buttonConfiguration.actionValueWhenPressed === ActionsEnum.showCalcs;
   }
 
   addToPastCalculations(pastCalculation: string) {

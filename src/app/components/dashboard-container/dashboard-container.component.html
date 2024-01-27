@@ -1,4 +1,15 @@
-<div class="flex flex-col gap-2 m-5">
-  <app-answer-display (newLastCalculatedAnswer)="updateLastAnswer($event)" (addNewPastCalculation)="addToPastCalculations($event)" [currentValues]="currentCalculationButtons"></app-answer-display>
-  <app-buttons-container (buttonPressed)="onButtonPressed($event)"></app-buttons-container>
+<div class="block h-screen p-5">
+  <div class="flex flex-col gap-1 h-full">
+    <div class="previous-calculations-container" [ngClass]="{'full-height' : fullHeightHistory}">
+      <app-previous-calculations-view [showBackButton]="fullHeightHistory" (backButtonClicked)="toggleFullHeightPrevious()" [previousCalculations]="pastCalculations"></app-previous-calculations-view>
+    </div>
+    <div *ngIf="!fullHeightHistory" class="answer-display-container" >
+      <app-answer-display (newLastCalculatedAnswer)="updateLastAnswer($event)"
+                          (addNewPastCalculation)="addToPastCalculations($event)"
+                          [currentValues]="currentCalculationButtons"></app-answer-display>
+    </div>
+    <div *ngIf="!fullHeightHistory" class="buttons flex-1">
+      <app-buttons-container (buttonPressed)="onButtonPressed($event)"></app-buttons-container>
+    </div>
+  </div>
 </div>
