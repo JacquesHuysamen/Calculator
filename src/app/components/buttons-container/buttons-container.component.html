@@ -1,0 +1,3 @@
+<div class="grid-container gap-1">
+  <app-input-button class="grid-item flex" (buttonPressed)="onButtonPressed($event)" [buttonConfig]="config" *ngFor="let config of buttonsConfig"></app-input-button>
+</div>
