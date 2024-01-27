@@ -7,4 +7,5 @@ export class InputButtonConfiguration {
   numericValueWhenPressed: number = -1;
   actionValueWhenPressed: ActionsEnum = ActionsEnum.noAction;
   isInstantAction = false;
+  isDisabled = false;
 }

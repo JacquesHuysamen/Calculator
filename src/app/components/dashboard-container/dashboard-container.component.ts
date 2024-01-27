@@ -37,6 +37,13 @@ export class DashboardContainerComponent {
       return;
     }
 
+    if (this.isBackSpace(buttonConfiguration)) {
+      const newList = Object.assign([], this.currentCalculationButtons)
+      newList.splice(this.currentCalculationButtons.length - 1, 1)
+      this.currentCalculationButtons = Object.assign([], newList)
+      return;
+    }
+
     if (this.isViewPastFullHeight(buttonConfiguration)) {
       this.toggleFullHeightPrevious();
       return;
@@ -70,6 +77,10 @@ export class DashboardContainerComponent {
 
   isClear(buttonConfiguration: InputButtonConfiguration) {
     return buttonConfiguration.actionValueWhenPressed === ActionsEnum.ac;
+  }
+
+  isBackSpace(buttonConfiguration: InputButtonConfiguration) {
+    return buttonConfiguration.actionValueWhenPressed === ActionsEnum.backSpace;
   }
 
   isViewPastFullHeight(buttonConfiguration: InputButtonConfiguration) {

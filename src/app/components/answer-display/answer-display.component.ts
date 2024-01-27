@@ -11,7 +11,11 @@ import {ActionsEnum} from "../../models/actions.enum";
 })
 export class AnswerDisplayComponent {
   @Input() set currentValues(currentValues: InputButtonConfiguration[]) {
+    if (currentValues.length < this._currentValues.length) {
+      this.eraseLast();
+    }
     this._currentValues = currentValues;
+
     if (!this.isLastButtonPressedEquals()) {
       this.addToCurrentCalcString();
       return;
@@ -61,22 +65,6 @@ export class AnswerDisplayComponent {
       currentCalcString += ` ${nextAction.actionValueWhenPressed} ${nextNum}`
     }
 
-    // const firstNum = numberValues.pop();
-    //
-    // if (!firstNum) return;
-    //
-    // calculatedValue = parseInt(firstNum.displayValue);
-    // currentCalcString = firstNum.displayValue;
-    //
-    // while (numberValues?.length && actionValues.length) {
-    //   const nextAction = actionValues.pop();
-    //   const nextNum = numberValues.pop();
-    //
-    //   if (!nextAction || !nextNum || nextAction.actionValueWhenPressed == ActionsEnum.equal) break;
-    //
-    //   calculatedValue = this.doCalculation(nextAction, nextNum, calculatedValue);
-    //   currentCalcString += ` ${nextAction.actionValueWhenPressed} ${nextNum.numericValueWhenPressed}`
-    // }
 
     this.currentCalculationString = currentCalcString + ` = ${calculatedValue}`;
     this.addNewPastCalculation.next(this.currentCalculationString);
@@ -146,8 +134,18 @@ export class AnswerDisplayComponent {
 
   private addValueToCalcString(button: InputButtonConfiguration) {
     const valueToAdd = button.actionValueWhenPressed ? button.actionValueWhenPressed.toString() : button.numericValueWhenPressed.toString();
+    let newStringToAdd = '';
 
-    this.currentCalculationString = this.currentCalculationString + ` ${valueToAdd}`;
+    if(button.isActionButton) {
+      newStringToAdd = newStringToAdd + ' ' + `${valueToAdd} `;
+    } else {
+      newStringToAdd =  newStringToAdd + `${valueToAdd}`
+    }
+
+    this.currentCalculationString =  this.currentCalculationString + newStringToAdd;
   }
 
+  private eraseLast() {
+    this.currentCalculationString = this.currentCalculationString.slice(0, -1).trimEnd();
+  }
 }

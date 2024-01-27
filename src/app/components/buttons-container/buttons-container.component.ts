@@ -25,10 +25,10 @@ export class ButtonsContainerComponent {
   }
 
   private setupButtonsConfig(): void {
-    this.buttonsConfig.push(this.createActionButton(ActionsEnum.showCalcs, true))
+    this.buttonsConfig.push(this.createActionButton(ActionsEnum.showCalcs, true, 'history'))
     this.buttonsConfig.push(this.createActionButton(ActionsEnum.ac, true))
-    this.buttonsConfig.push(this.createActionButton(ActionsEnum.ac, true))
-    this.buttonsConfig.push(this.createActionButton(ActionsEnum.ac, true))
+    this.buttonsConfig.push(this.createActionButton(ActionsEnum.multiply, true, undefined, true))
+    this.buttonsConfig.push(this.createActionButton(ActionsEnum.divide, true, undefined, true))
 
     this.buttonsConfig.push(this.createNormalButtonConfig(7));
     this.buttonsConfig.push(this.createNormalButtonConfig(8));
@@ -45,9 +45,9 @@ export class ButtonsContainerComponent {
     this.buttonsConfig.push(this.createNormalButtonConfig(3));
     this.buttonsConfig.push(this.createActionButton(ActionsEnum.equal, true))
 
-    this.buttonsConfig.push(this.createActionButton(ActionsEnum.backSpace, true))
+    this.buttonsConfig.push(this.createActionButton(ActionsEnum.backSpace, true, 'backspace'))
     this.buttonsConfig.push(this.createNormalButtonConfig(0));
-    this.buttonsConfig.push(this.createActionButton(ActionsEnum.showCalcs, true))
+    this.buttonsConfig.push(this.createActionButton(ActionsEnum.fullStop, true, undefined, true))
   }
 
   private createNormalButtonConfig(numericValueWhenPressed: number): InputButtonConfiguration {
@@ -61,13 +61,14 @@ export class ButtonsContainerComponent {
     return buttonConfig;
   }
 
-  private createActionButton(actionValueWhenPressed : ActionsEnum, isInstantAction = false) {
+  private createActionButton(actionValueWhenPressed: ActionsEnum, isInstantAction = false, iconName: string | undefined = undefined, isDisabled = false) {
     const buttonConfig = new InputButtonConfiguration();
     buttonConfig.displayValue = actionValueWhenPressed;
     buttonConfig.isActionButton = true;
-    // buttonConfig.assetToDisplayName = assetToDisplayName;
+    buttonConfig.assetToDisplayName = iconName;
     buttonConfig.actionValueWhenPressed = actionValueWhenPressed;
     buttonConfig.isInstantAction = isInstantAction;
+    buttonConfig.isDisabled = isDisabled;
 
     return buttonConfig;
   }

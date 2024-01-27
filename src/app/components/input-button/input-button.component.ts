@@ -1,13 +1,15 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {InputButtonConfiguration} from "../../models/input-button-configuration";
-import {NgIf} from "@angular/common";
-import {ActionsEnum} from "../../models/actions.enum";
+import {NgClass, NgIf} from "@angular/common";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-input-button',
   standalone: true,
   imports: [
-    NgIf
+    NgIf,
+    NgClass,
+    MatButton
   ],
   templateUrl: './input-button.component.html',
   styleUrl: './input-button.component.scss'
