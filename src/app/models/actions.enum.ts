@@ -2,8 +2,11 @@ export enum ActionsEnum {
   noAction= '',
   plus = '+',
   minus = '-',
+  multiply = '*',
+  divide = '/',
   equal = '=',
-  ac = 'ac',
-  backSpace = 'bs',
-  showCalcs = 'sc'
+  ac = 'AC',
+  backSpace = 'BS',
+  showCalcs = 'SC',
+  fullStop = '.'
 }

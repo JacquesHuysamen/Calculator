@@ -1,0 +1,8 @@
+<div class="flex flex-col h-full">
+  <div class="flex gap-1 flex-col items-end">
+    <div *ngFor="let calc of previousCalculations">
+      {{ calc }}
+    </div>
+  </div>
+  <button *ngIf="showBackButton" (click)="backClicked()" class="rounded-lg mt-auto border-4 border-indigo-500/100">Back</button>
+</div>

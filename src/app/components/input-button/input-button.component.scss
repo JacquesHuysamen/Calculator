@@ -1,0 +1,30 @@
+:host{
+  .action-text {
+    font-weight: bold;
+    color: white;
+    font-size: 2rem;
+  }
+
+  .actionButton {
+    @apply bg-indigo-500/100
+  }
+
+  .numeric-values-text {
+    @apply text-indigo-500/100;
+    font-size: 1.5rem;
+  }
+
+
+  .material-icons {
+    color: white;
+  }
+
+  button {
+    height: 100% !important;
+  }
+
+  .mat-mdc-button-disabled {
+    color: black;
+    background-color: gray;
+  }
+}

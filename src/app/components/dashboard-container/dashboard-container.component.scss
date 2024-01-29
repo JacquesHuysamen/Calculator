@@ -1,0 +1,17 @@
+:host {
+  height: 100vh;
+
+  .previous-calculations-container {
+    height: 30%;
+    overflow-y: auto;
+
+    &.full-height {
+      height: 100%;
+    }
+  }
+
+  .answer-display-container {
+    height: 10%;
+    overflow-y: auto;
+  }
+}

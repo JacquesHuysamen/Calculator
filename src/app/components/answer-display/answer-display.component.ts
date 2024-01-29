@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {InputButtonConfiguration} from "../../models/input-button-configuration";
 import {ActionsEnum} from "../../models/actions.enum";
 
@@ -9,9 +9,10 @@ import {ActionsEnum} from "../../models/actions.enum";
   templateUrl: './answer-display.component.html',
   styleUrl: './answer-display.component.scss'
 })
-export class AnswerDisplayComponent {
+export class AnswerDisplayComponent implements OnInit {
   @Input() set currentValues(currentValues: InputButtonConfiguration[]) {
     this._currentValues = currentValues;
+
     if (!this.isLastButtonPressedEquals()) {
       this.addToCurrentCalcString();
       return;
@@ -22,6 +23,9 @@ export class AnswerDisplayComponent {
   get currentValues(): InputButtonConfiguration[] {
     return this._currentValues;
   }
+
+  @Input()
+  eraseLastValue = new EventEmitter<void>();
 
   @Output()
   addNewPastCalculation = new EventEmitter<string>();
@@ -34,9 +38,13 @@ export class AnswerDisplayComponent {
   }
 
   private _currentValues: InputButtonConfiguration[] = [];
-  currentCalculationString = '';
   private lastWasEquals = false;
 
+  currentCalculationString = '';
+
+  ngOnInit(): void {
+    this.eraseLastValue.subscribe(() => this.eraseLast());
+  }
 
   private calculateAnswer() {
     let calculatedValue = 0;
@@ -61,22 +69,6 @@ export class AnswerDisplayComponent {
       currentCalcString += ` ${nextAction.actionValueWhenPressed} ${nextNum}`
     }
 
-    // const firstNum = numberValues.pop();
-    //
-    // if (!firstNum) return;
-    //
-    // calculatedValue = parseInt(firstNum.displayValue);
-    // currentCalcString = firstNum.displayValue;
-    //
-    // while (numberValues?.length && actionValues.length) {
-    //   const nextAction = actionValues.pop();
-    //   const nextNum = numberValues.pop();
-    //
-    //   if (!nextAction || !nextNum || nextAction.actionValueWhenPressed == ActionsEnum.equal) break;
-    //
-    //   calculatedValue = this.doCalculation(nextAction, nextNum, calculatedValue);
-    //   currentCalcString += ` ${nextAction.actionValueWhenPressed} ${nextNum.numericValueWhenPressed}`
-    // }
 
     this.currentCalculationString = currentCalcString + ` = ${calculatedValue}`;
     this.addNewPastCalculation.next(this.currentCalculationString);
@@ -136,8 +128,6 @@ export class AnswerDisplayComponent {
       this.currentCalculationString = '';
       this.lastWasEquals = false;
       this.currentValues.forEach(i => this.addValueToCalcString(i))
-      // this.addValueToCalcString(this.currentValues[0]);
-      // this.addValueToCalcString(this.currentValues[1]);
       return;
     }
 
@@ -146,8 +136,18 @@ export class AnswerDisplayComponent {
 
   private addValueToCalcString(button: InputButtonConfiguration) {
     const valueToAdd = button.actionValueWhenPressed ? button.actionValueWhenPressed.toString() : button.numericValueWhenPressed.toString();
+    let newStringToAdd = '';
 
-    this.currentCalculationString = this.currentCalculationString + ` ${valueToAdd}`;
+    if (button.isActionButton) {
+      newStringToAdd = newStringToAdd + ' ' + `${valueToAdd} `;
+    } else {
+      newStringToAdd = newStringToAdd + `${valueToAdd}`
+    }
+
+    this.currentCalculationString = this.currentCalculationString + newStringToAdd;
   }
 
+  private eraseLast() {
+    this.currentCalculationString = this.currentCalculationString.slice(0, -1).trimEnd();
+  }
 }

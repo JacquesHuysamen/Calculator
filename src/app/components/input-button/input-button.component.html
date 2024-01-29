@@ -1,5 +1,10 @@
 <div class="flex grow">
-  <button (click)="onClick()" class="grow rounded-lg border-4 border-indigo-500/100 " *ngIf="buttonConfig">
-    {{ buttonConfig.displayValue }}
+  <button [disabled]="buttonConfig.isDisabled" mat-raised-button [ngClass]="{'actionButton' : buttonConfig.isActionButton}" (click)="onClick()"
+          class="grow rounded-lg border-4 border-indigo-500/100" *ngIf="buttonConfig">
+    <span class="material-icons"
+          *ngIf="buttonConfig.assetToDisplayName; else text">{{ buttonConfig.assetToDisplayName }}</span>
+    <ng-template #text><span
+      [ngClass]="buttonConfig.isActionButton ? 'action-text' : 'numeric-values-text'">{{ buttonConfig.displayValue }}</span>
+    </ng-template>
   </button>
 </div>
