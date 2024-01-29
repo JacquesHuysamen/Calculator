@@ -19,6 +19,9 @@ export class ButtonsContainerComponent {
   buttonPressed = new EventEmitter<InputButtonConfiguration>();
 
   buttonsConfig: InputButtonConfiguration[] = [];
+  wasLastButtonPressedNumericAction = false;
+  numericActions = [ActionsEnum.plus, ActionsEnum.minus];
+
 
   constructor() {
     this.setupButtonsConfig();
@@ -55,7 +58,6 @@ export class ButtonsContainerComponent {
 
     buttonConfig.displayValue = numericValueWhenPressed.toString();
     buttonConfig.isActionButton = false;
-    // buttonConfig.assetToDisplayName = assetToDisplayName;
     buttonConfig.numericValueWhenPressed = numericValueWhenPressed;
 
     return buttonConfig;
@@ -73,8 +75,25 @@ export class ButtonsContainerComponent {
     return buttonConfig;
   }
 
+  onButtonPressed(buttonPressed: InputButtonConfiguration) {
+    if (this.isButtonNumericAction(buttonPressed)) {
+      this.disableOrEnableNumericActionButtons(true);
+    } else {
+      this.disableOrEnableNumericActionButtons(false);
+    }
+    this.wasLastButtonPressedNumericAction = this.isButtonNumericAction(buttonPressed);
+    this.buttonPressed.next(buttonPressed);
+  }
 
-  onButtonPressed($event: InputButtonConfiguration) {
-    this.buttonPressed.next($event);
+  disableOrEnableNumericActionButtons(newDisabledValue : boolean) {
+    this.buttonsConfig.forEach(button => {
+      if (this.numericActions.includes(button.actionValueWhenPressed)) {
+        button.isDisabled = newDisabledValue;
+      }
+    })
+  }
+
+  private isButtonNumericAction(buttonConfig : InputButtonConfiguration) {
+    return this.numericActions.includes(buttonConfig.actionValueWhenPressed);
   }
 }
