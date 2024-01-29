@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter} from '@angular/core';
 import {ButtonsContainerComponent} from "../buttons-container/buttons-container.component";
 import {AnswerDisplayComponent} from "../answer-display/answer-display.component";
 import {ActionsEnum} from "../../models/actions.enum";
@@ -25,6 +25,7 @@ export class DashboardContainerComponent {
   lastCalculationAnswer = 0;
   lastPressedWasEquals = false;
   fullHeightHistory = false;
+  eraseLastValue = new EventEmitter<void>;
 
   constructor() {
     this.currentCalculationButtons = [];
@@ -38,9 +39,10 @@ export class DashboardContainerComponent {
     }
 
     if (this.isBackSpace(buttonConfiguration)) {
-      const newList = Object.assign([], this.currentCalculationButtons)
-      newList.splice(this.currentCalculationButtons.length - 1, 1)
-      this.currentCalculationButtons = Object.assign([], newList)
+      // const newList = Object.assign([], this.currentCalculationButtons)
+      // newList.splice(this.currentCalculationButtons.length - 1, 1)
+      // this.currentCalculationButtons = Object.assign([], newList)
+      this.eraseLastValue.next();
       return;
     }
 
@@ -48,10 +50,12 @@ export class DashboardContainerComponent {
       this.toggleFullHeightPrevious();
       return;
     }
+
     if (this.lastPressedWasEquals) {
       this.handleNewCalculationStart(buttonConfiguration);
       return;
     }
+
     this.currentCalculationButtons = this.currentCalculationButtons.filter(i => i != null);
     this.currentCalculationButtons.push(buttonConfiguration);
   }

@@ -6,7 +6,7 @@
     <div *ngIf="!fullHeightHistory" class="answer-display-container" >
       <app-answer-display (newLastCalculatedAnswer)="updateLastAnswer($event)"
                           (addNewPastCalculation)="addToPastCalculations($event)"
-                          [currentValues]="currentCalculationButtons"></app-answer-display>
+                          [currentValues]="currentCalculationButtons" [eraseLastValue]="eraseLastValue"></app-answer-display>
     </div>
     <div *ngIf="!fullHeightHistory" class="buttons flex-1">
       <app-buttons-container (buttonPressed)="onButtonPressed($event)"></app-buttons-container>
