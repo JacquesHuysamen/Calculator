@@ -148,6 +148,6 @@ export class AnswerDisplayComponent implements OnInit {
   }
 
   private eraseLast() {
-    this.currentCalculationString = this.currentCalculationString.slice(0, -1).trimEnd();
+    this.currentCalculationString = this.currentCalculationString.trimEnd().slice(0, -1).trimEnd();
   }
 }

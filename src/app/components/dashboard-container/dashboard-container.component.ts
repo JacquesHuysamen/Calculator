@@ -39,9 +39,6 @@ export class DashboardContainerComponent {
     }
 
     if (this.isBackSpace(buttonConfiguration)) {
-      // const newList = Object.assign([], this.currentCalculationButtons)
-      // newList.splice(this.currentCalculationButtons.length - 1, 1)
-      // this.currentCalculationButtons = Object.assign([], newList)
       this.eraseLastValue.next();
       return;
     }
